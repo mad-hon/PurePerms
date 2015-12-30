@@ -54,7 +54,7 @@ class UserDataManager
         // TODO: ...
         if($group === null)
         {
-            $this->plugin->getLogger()->critical("Invalid group name found in " . $player->getName() . "'s player data (World: " . $levelName . ")");
+            $this->plugin->getLogger()->critical("Invalid group name found in " . $player->getName() . "'s player data (World: " . ($levelName === null ? "GLOBAL" : $levelName) . ")");
             $this->plugin->getLogger()->critical("Restoring the group data to default settings");
 
             $defaultGroup = $this->plugin->getDefaultGroup();
@@ -107,7 +107,8 @@ class UserDataManager
      */
     public function getWorldData(IPlayer $player, $levelName)
     {
-        if($levelName === null) $levelName = $this->plugin->getServer()->getDefaultLevel()->getName();
+        if($levelName === null)
+            $levelName = $this->plugin->getServer()->getDefaultLevel()->getName();
 
         if(!isset($this->getData($player)["worlds"][$levelName]))
         {
@@ -159,7 +160,7 @@ class UserDataManager
         }
         else
         {
-            $worldData = $this->getWorldData($levelName);
+            $worldData = $this->getWorldData($player, $levelName);
 
             $worldData["group"] = $group->getName();
 
